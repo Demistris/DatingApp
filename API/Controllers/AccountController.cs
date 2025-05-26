@@ -1,5 +1,5 @@
 using API.DTOs.Requests;
-using API.Entities;
+using API.DTOs.Responses;
 using API.Messages;
 using API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ public class AccountController : BaseApiController
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<AppUser>> Register(RegisterRequest request)
+    public async Task<ActionResult<AuthResponse>> Register(RegisterRequest request)
     {
         if (await _accountService.UserExistsAsync(request.Email))
         {
@@ -25,24 +25,34 @@ public class AccountController : BaseApiController
 
         var response = await _accountService.RegisterAsync(request);
 
-        if (!response.Success || response.User == null)
+        if (!IsValidAuthResponse(response))
         {
-            return BadRequest(response);
+            return BadRequest(response?.Message ?? ErrorMessages.InvalidRegister);
         }
 
-        return Ok(response.User);
+        return Ok(response);
     }
 
     [HttpPost("login")]
-    public async Task<ActionResult<AppUser>> Login(LoginRequest request)
-    {    
+    public async Task<ActionResult<AuthResponse>> Login(LoginRequest request)
+    {
         var response = await _accountService.LoginAsync(request);
 
-        if (!response.Success || response.User == null) // access token is null
+        if (!IsValidAuthResponse(response))
         {
-            return Unauthorized(ErrorMessages.InvalidEmail); // or InvalidPassword
+            return Unauthorized(response?.Message ?? ErrorMessages.InvalidLogin);
         }
 
-        return Ok(response.User);
+        return Ok(response);
+    }
+
+    private bool IsValidAuthResponse(AuthResponse response)
+    {
+        if (response == null || !response.Success || response.UserEmail == null || response.Token == null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

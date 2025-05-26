@@ -12,13 +12,15 @@ namespace API.Services;
 public class AccountService : IAccountService
 {
     private readonly IAccountRepository _accountRepository;
+    private readonly ITokenService _tokenService;
 
-    public AccountService(IAccountRepository accountRepository)
+    public AccountService(IAccountRepository accountRepository, ITokenService tokenService)
     {
         _accountRepository = accountRepository;
+        _tokenService = tokenService;
     }
 
-    public async Task<RegisterResponse> RegisterAsync(RegisterRequest request)
+    public async Task<AuthResponse> RegisterAsync(RegisterRequest request)
     {
         using var hmac = new HMACSHA512();
         var user = new AppUser
@@ -32,21 +34,22 @@ public class AccountService : IAccountService
 
         await _accountRepository.AddUserAsync(user);
 
-        return new RegisterResponse
+        return new AuthResponse
         {
             Success = true,
             Message = SuccessMessages.UserRegistered,
-            User = user
+            UserEmail = user.Email,
+            Token = _tokenService.CreateTokenAsync(user).Token
         };
     }
 
-    public async Task<LoginResponse> LoginAsync(LoginRequest request)
+    public async Task<AuthResponse> LoginAsync(LoginRequest request)
     {
         var normalizedEmail = NormalizeEmail(request.Email);
         var user = await _accountRepository.GetUserByEmailAsync(normalizedEmail);
         if (user == null)
         {
-            return new LoginResponse
+            return new AuthResponse
             {
                 Success = false,
                 Message = ErrorMessages.InvalidEmail
@@ -59,7 +62,7 @@ public class AccountService : IAccountService
         {
             if (computedHash[i] != user.PasswordHash[i])
             {
-                return new LoginResponse
+                return new AuthResponse
                 {
                     Success = false,
                     Message = ErrorMessages.InvalidPassword
@@ -67,11 +70,22 @@ public class AccountService : IAccountService
             }
         }
 
-        return new LoginResponse
+        var token = _tokenService.CreateTokenAsync(user);
+        if (token == null || string.IsNullOrEmpty(token.Token))
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = token?.Message ?? ErrorMessages.TokenAccessError
+            };
+        }
+
+        return new AuthResponse
         {
             Success = true,
             Message = SuccessMessages.UserLoggedIn,
-            User = user
+            UserEmail = user.Email,
+            Token = token.Token
         };
     }
 
