@@ -5,16 +5,24 @@ using API.DTOs.Responses;
 using API.Entities;
 using API.Messages;
 using API.Services.Interfaces;
+using API.Settings;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services;
 
-public class TokenService(IConfiguration config) : ITokenService
+public class TokenService : ITokenService
 {
+    private readonly JwtSettings _jwtSettings;
+
+    public TokenService(IOptions<JwtSettings> jwtOptions)
+    {
+        _jwtSettings = jwtOptions.Value;
+    }
+
     public TokenResponse CreateTokenAsync(AppUser user)
     {
-        // TODO: Add TokenKey to configuration?
-        var tokenKey = config["TokenKey"];
+        var tokenKey = _jwtSettings.TokenKey;
         if (string.IsNullOrEmpty(tokenKey))
         {
             return new TokenResponse
@@ -42,7 +50,7 @@ public class TokenService(IConfiguration config) : ITokenService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7), // TODO: Add to configuration
+            Expires = DateTime.UtcNow.AddDays(_jwtSettings.TokenExpiryDays),
             SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)
         };
 
