@@ -9,17 +9,17 @@ namespace API.Controllers;
 [Authorize]
 public class UsersController : BaseApiController
 {
-    private readonly IUserService _userService;
+    private readonly IUsersService _usersService;
 
-    public UsersController(IUserService userService)
+    public UsersController(IUsersService usersService)
     {
-        _userService = userService;
+        _usersService = usersService;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
-        var users = await _userService.GetUsersAsync();
+        var users = await _usersService.GetUsersAsync();
 
         return Ok(users);
     }
@@ -27,7 +27,7 @@ public class UsersController : BaseApiController
     [HttpGet("{id:int}")]
     public async Task<ActionResult<AppUser>> GetUserById(int id)
     {
-        var user = await _userService.GetUserByIdAsync(id);
+        var user = await _usersService.GetUserByIdAsync(id);
         if (user == null)
         {
             return NotFound(ErrorMessages.UserNotFound);

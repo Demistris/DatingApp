@@ -4,11 +4,11 @@ using API.Services.Interfaces;
 
 namespace API.Services;
 
-public class UserService : IUserService
+public class UsersService : IUsersService
 {
     private readonly IUserRepository _userRepository;
 
-    public UserService(IUserRepository userRepository)
+    public UsersService(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
