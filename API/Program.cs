@@ -5,6 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddApplicationServices(builder.Configuration);
 
+// Add Fluent Validation
+builder.Services.AddValidationServices();
+
 // Configure authentication with JWT
 builder.Services.AddIdentityServices(builder.Configuration);
 
