@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories;
 
-public class UserRepository(DataContext context) : IUserRepository
+public class UsersRepository(DataContext context) : IUsersRepository
 {
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {

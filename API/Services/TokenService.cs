@@ -20,7 +20,7 @@ public class TokenService : ITokenService
         _jwtSettings = jwtOptions.Value;
     }
 
-    public TokenResponse CreateTokenAsync(AppUser user)
+    public TokenResponse CreateToken(AppUser user)
     {
         var tokenKey = _jwtSettings.TokenKey;
         if (string.IsNullOrEmpty(tokenKey))

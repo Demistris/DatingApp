@@ -34,12 +34,22 @@ public class AccountService : IAccountService
 
         await _accountRepository.AddUserAsync(user);
 
+        var token = _tokenService.CreateToken(user);
+        if (token == null || string.IsNullOrEmpty(token.Token))
+        {
+            return new AuthResponse
+            {
+                Success = false,
+                Message = token?.Message ?? ErrorMessages.TokenAccessError
+            };
+        }
+
         return new AuthResponse
         {
             Success = true,
             Message = SuccessMessages.UserRegistered,
             UserEmail = user.Email,
-            Token = _tokenService.CreateTokenAsync(user).Token
+            Token = token.Token
         };
     }
 
@@ -70,7 +80,7 @@ public class AccountService : IAccountService
             }
         }
 
-        var token = _tokenService.CreateTokenAsync(user);
+        var token = _tokenService.CreateToken(user);
         if (token == null || string.IsNullOrEmpty(token.Token))
         {
             return new AuthResponse

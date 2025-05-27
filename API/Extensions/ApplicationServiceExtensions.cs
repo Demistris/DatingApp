@@ -22,7 +22,7 @@ public static class ApplicationServiceExtensions
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<ITokenService, TokenService>();
 
-        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
         services.AddScoped<IAccountRepository, AccountRepository>();
 
         return services;

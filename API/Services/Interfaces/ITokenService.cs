@@ -5,5 +5,5 @@ namespace API.Services.Interfaces;
 
 public interface ITokenService
 {
-    TokenResponse CreateTokenAsync(AppUser user);
+    TokenResponse CreateToken(AppUser user);
 }

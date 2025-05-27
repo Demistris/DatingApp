@@ -6,22 +6,22 @@ namespace API.Services;
 
 public class UsersService : IUsersService
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IUsersRepository _usersRepository;
 
-    public UsersService(IUserRepository userRepository)
+    public UsersService(IUsersRepository usersRepository)
     {
-        _userRepository = userRepository;
+        _usersRepository = usersRepository;
     }
 
     public async Task<IEnumerable<AppUser>> GetUsersAsync()
     {
-        var users = await _userRepository.GetUsersAsync();
+        var users = await _usersRepository.GetUsersAsync();
         return users;
     }
 
     public async Task<AppUser?> GetUserByIdAsync(int id)
     {
-        var user = await _userRepository.GetUserByIdAsync(id);
+        var user = await _usersRepository.GetUserByIdAsync(id);
         return user;
     }
 }
