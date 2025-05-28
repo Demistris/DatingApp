@@ -14,7 +14,7 @@ public static class IdentityServiceExtensions
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
-                var tokenKey = config["TokenKey"] ?? throw new InvalidOperationException("TokenKey is not configured in appsettings.json");
+                var tokenKey = config["Jwt:TokenKey"] ?? throw new InvalidOperationException("TokenKey is not configured in appsettings.json");
                 options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
