@@ -1,27 +1,25 @@
-import { Component, inject, input, output } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router, RouterModule } from '@angular/router';
+import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  imports: [FormsModule, RouterModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css',
+  selector: 'app-login',
+  imports: [FormsModule],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.css',
 })
-export class RegisterComponent {
-  private accountService = inject(AccountService);
+export class LoginComponent {
+  private router = inject(Router);
   private toastr = inject(ToastrService);
-  router = inject(Router);
-  cancelRegister = output<boolean>();
+  accountService = inject(AccountService);
   model: any = {};
 
-  register() {
-    this.accountService.register(this.model).subscribe({
-      next: (response) => {
-        console.log('Registration successful:', response);
-        this.router.navigate(['/']);
+  onLoginClick() {
+    this.accountService.login(this.model).subscribe({
+      next: () => {
+        this.router.navigateByUrl('/members');
       },
       // TODO: Handle errors in service
       error: (error) => {
@@ -45,13 +43,24 @@ export class RegisterComponent {
         }
         // Fallback for unexpected formats
         else {
-          this.toastr.error('Registration failed. Please try again');
+          this.toastr.error('Login failed. Please try again');
         }
-        console.error('Registration failed:', error);
-      },
-      complete: () => {
-        console.log('Registration request completed');
+        console.error('Login error:', error);
       },
     });
+  }
+
+  onRegisterClick() {
+    this.router.navigateByUrl('/register');
+  }
+
+  onForgotPasswordClick() {
+    this.toastr.info('In progress');
+    // TODO: Make functionality for this method
+  }
+
+  onRememberMeToggle(isChecked: boolean) {
+    this.toastr.info('In progress');
+    // TODO: Make functionality for this methods
   }
 }

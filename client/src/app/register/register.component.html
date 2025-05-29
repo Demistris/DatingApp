@@ -4,6 +4,8 @@
       <form #registerForm="ngForm" (ngSubmit)="register()">
         <h2 class="text-center tex-primary">Sign up</h2>
         <hr />
+
+        <!-- First Name -->
         <div class="mb-3 form-floating">
           <input
             type="text"
@@ -15,6 +17,7 @@
           <label>First name</label>
         </div>
 
+        <!-- Last Name -->
         <div class="mb-3 form-floating">
           <input
             type="text"
@@ -26,6 +29,7 @@
           <label>Last name</label>
         </div>
 
+        <!-- Email -->
         <div class="mb-3 form-floating">
           <input
             type="text"
@@ -37,6 +41,7 @@
           <label>Email</label>
         </div>
 
+        <!-- Password -->
         <div class="mb-3 form-floating">
           <input
             type="password"
@@ -47,11 +52,18 @@
           />
           <label>Password</label>
         </div>
-        <div class="form-group text-center">
-          <button class="btn btn-success me-2" type="submit">Register</button>
-          <button (click)="cancel()" class="btn btn-default me-2" type="button">
-            Cancel
+
+        <!-- Register Button -->
+        <div class="form-group text-center mb-3">
+          <button class="btn btn-primary w-100 py-1" type="submit">
+            Register
           </button>
+        </div>
+
+        <!-- "Already have an account?" Link -->
+        <div class="text-center mt-3">
+          <span class="me-1">Already have an account?</span>
+          <a routerLink="/login" class="text-primary sign-in-link">Sign in </a>
         </div>
       </form>
     </div>

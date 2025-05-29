@@ -1,14 +1,52 @@
 <div class="container mt-5">
-  <div style="text-align: center">
-    <h1>Find your match</h1>
-    <p class="lead">
-      Come on in to view your matches... all you need to do is sign up!
-    </p>
-    <div class="text-center">
-      <button (click)="onRegisterClick()" class="btn btn-primary btn-lg me-2">
-        Register
-      </button>
-      <button class="btn btn-info btn-lg me-2">Learn more</button>
+  <div class="text-center">
+    @if (!accountService.currentUser()) {
+    <div class="text-center pt-4">
+      <h1 class="display-4 fw-bold mb-3">Find your match today 💖</h1>
     </div>
+
+    <p class="lead text-muted mb-4">
+      Discover meaningful connections with people who share your interests.
+    </p>
+
+    <div class="d-flex justify-content-center mb-4">
+      <button (click)="onRegisterClick()" class="btn btn-primary btn-lg me-3">
+        Get Started
+      </button>
+      <button class="btn btn-outline-secondary btn-lg">Learn More</button>
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="row mt-5">
+      <div class="col-md-4">
+        <i class="fa fa-heart text-danger"></i>
+        <h5>Smart Matches</h5>
+        <p class="text-muted">
+          Get matched with people who truly fit your vibe.
+        </p>
+      </div>
+      <div class="col-md-4">
+        <i class="fa fa-comment text-primary"></i>
+        <h5>Private Messaging</h5>
+        <p class="text-muted">Start meaningful chats in a safe environment.</p>
+      </div>
+      <div class="col-md-4">
+        <i class="fa fa-map-marker text-success"></i>
+        <h5>Nearby Matches</h5>
+        <p class="text-muted">Connect with real people near your location.</p>
+      </div>
+    </div>
+
+    <!-- <div class="mt-5">
+      <h4>Success Stories</h4>
+      <blockquote class="blockquote text-center">
+        <p class="mb-1">
+          "I met the love of my life here. Best decision I ever made!"
+        </p>
+        <footer class="blockquote-footer">Samantha, 29</footer>
+      </blockquote>
+    </div> -->
+    }
   </div>
 </div>

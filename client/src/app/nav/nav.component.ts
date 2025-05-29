@@ -28,41 +28,11 @@ export class NavComponent {
     return this.accountService.currentUser();
   }
 
-  login() {
-    this.accountService.login(this.model).subscribe({
-      next: () => {
-        this.router.navigateByUrl('/members');
-      },
-      // TODO: Handle errors in service
-      error: (error) => {
-        // Validation errors
-        if (error.error?.errors) {
-          const errorMessages = [];
-          for (const key in error.error.errors) {
-            if (error.error.errors[key]) {
-              errorMessages.push(...error.error.errors[key]);
-            }
-          }
-          this.toastr.error(errorMessages.join('\n'));
-        }
-        // Direct string error
-        else if (typeof error.error === 'string') {
-          this.toastr.error(error.error);
-        }
-        // Error object with a message property
-        else if (error.error?.message) {
-          this.toastr.error(error.error.message);
-        }
-        // Fallback for unexpected formats
-        else {
-          this.toastr.error('Login failed. Please try again');
-        }
-        console.error('Login error:', error);
-      },
-    });
+  onLoginClick() {
+    this.router.navigateByUrl('/login');
   }
 
-  logout() {
+  onLogoutClick() {
     this.accountService.logout();
     this.router.navigateByUrl('/');
   }

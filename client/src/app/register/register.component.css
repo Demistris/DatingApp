@@ -1,0 +1,8 @@
+.sign-in-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.sign-in-link:hover {
+  text-decoration: underline;
+}

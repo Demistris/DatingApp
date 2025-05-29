@@ -6,11 +6,17 @@ import { ListsComponent } from './lists/lists.component';
 import { MessagesComponent } from './messages/messages.component';
 import { authGuard } from './_guards/auth.guard';
 import { RegisterComponent } from './register/register.component';
+import { LoginComponent } from './login/login.component';
+import { noAuthGuard } from './_guards/no-auth.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'register', component: RegisterComponent },
-  // { path: 'login', component: RegisterComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [noAuthGuard],
+  },
+  { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   {
     path: '',
     runGuardsAndResolvers: 'always',
