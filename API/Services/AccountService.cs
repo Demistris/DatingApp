@@ -48,6 +48,8 @@ public class AccountService : IAccountService
         {
             Success = true,
             Message = SuccessMessages.UserRegistered,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             UserEmail = user.Email,
             Token = token.Token
         };
@@ -94,6 +96,8 @@ public class AccountService : IAccountService
         {
             Success = true,
             Message = SuccessMessages.UserLoggedIn,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             UserEmail = user.Email,
             Token = token.Token
         };

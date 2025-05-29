@@ -91,16 +91,22 @@ public class AccountControllerTests
     }
 
     [Theory]
-    [InlineData(null, "token")]
-    [InlineData("johndoe@example.com", null)]
-    [InlineData(null, null)]
-    public async Task Register_WhenEmailOrTokenIsNull_ShouldReturnBadRequest(string userEmail, string token)
+    [InlineData(null, "Doe", "test@example.com", "valid_token")]
+    [InlineData("John", null, "test@example.com", "valid_token")]
+    [InlineData("John", "Doe", null, "valid_token")]
+    [InlineData("John", "Doe", "test@example.com", null)]
+    [InlineData("John", "Doe", " ", "valid_token")]
+    [InlineData("John", "Doe", "test@example.com", "")]
+    [InlineData("", "", "", "")]
+    public async Task Register_WhenAuthResponseHasInvalidData_ShouldReturnBadRequest(string firstName, string lastName, string userEmail, string token)
     {
         // Arrange
         var invalidResponse = new AuthResponse
         {
             Success = true,
             Message = ErrorMessages.InvalidRegister,
+            FirstName = firstName,
+            LastName = lastName,
             UserEmail = userEmail,
             Token = token
         };
@@ -126,6 +132,8 @@ public class AccountControllerTests
         {
             Success = true,
             Message = SuccessMessages.UserRegistered,
+            FirstName = "John",
+            LastName = "Doe",
             UserEmail = _validRegisterRequest.Email,
             Token = "valid_token"
         };
@@ -184,16 +192,22 @@ public class AccountControllerTests
     }
 
     [Theory]
-    [InlineData(null, "token")]
-    [InlineData("johndoe@example.com", null)]
-    [InlineData(null, null)]
-    public async Task Login_WhenEmailOrTokenIsNull_ShouldReturnUnauthorized(string userEmail, string token)
+    [InlineData(null, "Doe", "test@example.com", "valid_token")]
+    [InlineData("John", null, "test@example.com", "valid_token")]
+    [InlineData("John", "Doe", null, "valid_token")]
+    [InlineData("John", "Doe", "test@example.com", null)]
+    [InlineData("John", "Doe", " ", "valid_token")]
+    [InlineData("John", "Doe", "test@example.com", "")]
+    [InlineData("", "", "", "")]
+    public async Task Login_WhenAuthResponseHasInvalidData_ShouldReturnUnauthorized(string firstName, string lastName, string userEmail, string token)
     {
         // Arrange
         var invalidResponse = new AuthResponse
         {
             Success = true,
             Message = ErrorMessages.InvalidLogin,
+            FirstName = firstName,
+            LastName = lastName,
             UserEmail = userEmail,
             Token = token
         };
@@ -218,6 +232,8 @@ public class AccountControllerTests
         {
             Success = true,
             Message = SuccessMessages.UserLoggedIn,
+            FirstName = "John",
+            LastName = "Doe",
             UserEmail = _validLoginRequest.Email,
             Token = "valid_token"
         };

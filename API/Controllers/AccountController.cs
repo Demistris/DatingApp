@@ -48,7 +48,12 @@ public class AccountController : BaseApiController
 
     private bool IsValidAuthResponse(AuthResponse response)
     {
-        if (response == null || !response.Success || response.UserEmail == null || response.Token == null)
+        if (response == null ||
+            !response.Success ||
+            string.IsNullOrWhiteSpace(response.FirstName) ||
+            string.IsNullOrWhiteSpace(response.LastName) ||
+            string.IsNullOrWhiteSpace(response.UserEmail) ||
+            string.IsNullOrWhiteSpace(response.Token))
         {
             return false;
         }
